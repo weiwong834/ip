@@ -2,7 +2,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Squid {
-    public static void main(String[] args) {
+    public enum CommandType {
+        BYE, LIST, DELETE, TODO, DEADLINE, EVENT, MARK, UNMARK
+    }
+
+    public static void main(String[] args) throws SquidException {
         Scanner sc = new Scanner(System.in);
         ArrayList<Task> tasks = new ArrayList<>();
 
@@ -14,13 +18,24 @@ public class Squid {
         System.out.println(line + greeting + line);
 
         while (true) {
-            try {
-                String input = sc.nextLine();
+            String input = sc.nextLine().trim();
+            String[] parts = input.split(" ", 2);
+            String commandString = parts[0].toUpperCase();
+            CommandType command;
 
-                if (input.equals("bye")) {
+            try {
+                command = CommandType.valueOf(commandString);
+            } catch (IllegalArgumentException e) {
+                System.out.println(line + "what you talking about...\n" + line);
+                continue;
+            }
+
+            switch (command) {
+                case BYE: {
                     System.out.println(line + goodbye + line);
-                    break;
-                } else if (input.equals("list")) {
+                    return;
+                }
+                case LIST: {
                     if (tasks.isEmpty()) {
                         throw new SquidException("you have no tasks");
                     }
@@ -29,46 +44,62 @@ public class Squid {
                         System.out.println((i + 1) + ". " + tasks.get(i) + "\n");
                     }
                     System.out.println(line);
-                } else if (input.startsWith("delete ")) {
-                    int index = Integer.parseInt(input.substring(7).trim()) - 1;
+                    break;
+                }
+                case DELETE: {
+                    if (parts.length < 2) {
+                        throw new SquidException("Usage: delete (task number)");
+                    }
+                    int index = Integer.parseInt(parts[1].trim()) - 1;
                     if (index < 0 || index >= tasks.size()) {
                         throw new SquidException("Invalid task number");
                     }
                     Task removedTask = tasks.remove(index);
                     System.out.println(line + "Noted. I've removed this task:\n" + removedTask + "\nNow you have "
                             + tasks.size() + " tasks in the list.\n" + line);
-                } else if (input.startsWith("todo ")) {
-                    if (input.trim().length() <= 5) {
+                    break;
+                }
+                case TODO: {
+                    if (parts.length < 2) {
                         throw new SquidException("Usage: todo (description)");
                     }
-                    String description = input.substring(5).trim();
+                    String description = parts[1].trim();
                     tasks.add(new Todo(description));
                     System.out.println(line + "Got it. I've added this task:\n" + new Todo(description) + "\nNow you have "
                             + tasks.size() + " tasks in the list.\n" + line);
-                } else if (input.startsWith("deadline ")) {
-                    int bySign = input.indexOf("/by");
-                    if (input.trim().length() <= 9 || bySign == -1) {
+                    break;
+                }
+                case DEADLINE: {
+                    if (parts.length < 2 || !parts[1].contains("/by")) {
                         throw new SquidException("Usage: deadline (description) /by (deadline)");
                     }
-                    String description = input.substring(9, bySign).trim();
-                    String by = input.substring(bySign + 4).trim();
+                    int byIndex = parts[1].indexOf("/by");
+                    String description = parts[1].substring(0, byIndex).trim();
+                    String by = parts[1].substring(byIndex + 4).trim();
                     tasks.add(new Deadline(description, by));
                     System.out.println(line + "Got it. I've added this task:\n" + new Deadline(description, by) + "\nNow you have "
                             + tasks.size() + " tasks in the list.\n" + line);
-                } else if (input.startsWith("event ")) {
-                    int fromSign = input.indexOf("/from");
-                    int toSign = input.indexOf("/to");
-                    if (input.trim().length() <= 9 || fromSign == -1 || toSign == -1) {
+                    break;
+                }
+                case EVENT: {
+                    if (parts.length < 2 || !parts[1].contains("/from") || !parts[1].contains("/to")) {
                         throw new SquidException("Usage: event (description) /from (start) /to (end)");
                     }
-                    String description = input.substring(6, fromSign).trim();
-                    String from = input.substring(fromSign + 6, toSign).trim();
-                    String to = input.substring(toSign + 4).trim();
+                    int fromIndex = parts[1].indexOf("/from");
+                    int toIndex = parts[1].indexOf("/to");
+                    String description = parts[1].substring(0, fromIndex).trim();
+                    String from = parts[1].substring(fromIndex + 6, toIndex).trim();
+                    String to = parts[1].substring(toIndex + 4).trim();
                     tasks.add(new Event(description, from, to));
                     System.out.println(line + "Got it. I've added this task:\n" + new Event(description, from, to) + "\nNow you have "
                             + tasks.size() + " tasks in the list.\n" + line);
-                } else if (input.startsWith("mark ")) {
-                    int index = Integer.parseInt(input.substring(5)) - 1;
+                    break;
+                }
+                case MARK: {
+                    if (parts.length < 2) {
+                        throw new SquidException("Usage: mark (task number)");
+                    }
+                    int index = Integer.parseInt(parts[1].trim()) -1;
                     if (index < 0 || index >= tasks.size()) {
                         throw new SquidException("Inaccessible index");
                     }
@@ -76,8 +107,13 @@ public class Squid {
                     curr.setDone();
                     System.out.println(line + "Nice! I've marked this task as done:\n");
                     System.out.println(curr + "\n" + line);
-                } else if (input.startsWith("unmark ")) {
-                    int index = Integer.parseInt(input.substring(7)) - 1;
+                    break;
+                }
+                case UNMARK: {
+                    if (parts.length < 2) {
+                        throw new SquidException("Usage: unmark (task number)");
+                    }
+                    int index = Integer.parseInt(parts[1].trim()) -1;
                     if (index < 0 || index >= tasks.size()) {
                         throw new SquidException("Inaccessible index");
                     }
@@ -85,13 +121,13 @@ public class Squid {
                     curr.setNotDone();
                     System.out.println(line + "OK, I've marked this task as not done yet:\n");
                     System.out.println(curr + "\n" + line);
-                } else {
-                    throw new SquidException("what you talking about...");
+                    break;
                 }
-            } catch (SquidException e) {
-                System.out.println(line + e.getMessage() + "\n" + line);
+                default:
+                    throw new SquidException("what you talking about...");
+
             }
+
         }
-        sc.close();
     }
 }
