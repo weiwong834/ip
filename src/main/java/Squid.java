@@ -58,6 +58,8 @@ public class Squid {
                 curr.setNotDone();
                 System.out.println(line + "OK, I've marked this task as not done yet:\n");
                 System.out.println(curr + "\n" + line);
+            } else {
+                System.out.println(line + "Invalid command, pls try again!\n" + line);
             }
         }
         sc.close();

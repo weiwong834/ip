@@ -1,0 +1,13 @@
+burp
+todo groceries
+deadline essay /by Friday
+list
+mark 2
+list
+event workshop /from Monday 2pm /to 5pm
+unmark 2
+list
+burp
+deadline project /by Friday
+list
+bye
