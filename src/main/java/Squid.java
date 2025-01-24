@@ -29,6 +29,14 @@ public class Squid {
                         System.out.println((i + 1) + ". " + tasks.get(i) + "\n");
                     }
                     System.out.println(line);
+                } else if (input.startsWith("delete ")) {
+                    int index = Integer.parseInt(input.substring(7).trim()) - 1;
+                    if (index < 0 || index >= tasks.size()) {
+                        throw new SquidException("Invalid task number");
+                    }
+                    Task removedTask = tasks.remove(index);
+                    System.out.println(line + "Noted. I've removed this task:\n" + removedTask + "\nNow you have "
+                            + tasks.size() + " tasks in the list.\n" + line);
                 } else if (input.startsWith("todo ")) {
                     if (input.trim().length() <= 5) {
                         throw new SquidException("Usage: todo (description)");
