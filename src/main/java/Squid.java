@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Squid {
@@ -8,7 +8,8 @@ public class Squid {
 
     public static void main(String[] args) throws SquidException {
         Scanner sc = new Scanner(System.in);
-        ArrayList<Task> tasks = new ArrayList<>();
+        TaskStorage storage = new TaskStorage("./data/squid.txt");
+        List<Task> tasks = storage.loadTasksFromFile();
 
         String line = "____________________________________________________________\n";
         String greeting = " Hello! I'm Squid\n"
@@ -32,6 +33,7 @@ public class Squid {
 
             switch (command) {
                 case BYE: {
+                    storage.saveTasksToFile(tasks);
                     System.out.println(line + goodbye + line);
                     return;
                 }
@@ -55,6 +57,7 @@ public class Squid {
                         throw new SquidException("Invalid task number");
                     }
                     Task removedTask = tasks.remove(index);
+                    storage.saveTasksToFile(tasks);
                     System.out.println(line + "Noted. I've removed this task:\n" + removedTask + "\nNow you have "
                             + tasks.size() + " tasks in the list.\n" + line);
                     break;
@@ -65,6 +68,7 @@ public class Squid {
                     }
                     String description = parts[1].trim();
                     tasks.add(new Todo(description));
+                    storage.saveTasksToFile(tasks);
                     System.out.println(line + "Got it. I've added this task:\n" + new Todo(description) + "\nNow you have "
                             + tasks.size() + " tasks in the list.\n" + line);
                     break;
@@ -77,6 +81,7 @@ public class Squid {
                     String description = parts[1].substring(0, byIndex).trim();
                     String by = parts[1].substring(byIndex + 4).trim();
                     tasks.add(new Deadline(description, by));
+                    storage.saveTasksToFile(tasks);
                     System.out.println(line + "Got it. I've added this task:\n" + new Deadline(description, by) + "\nNow you have "
                             + tasks.size() + " tasks in the list.\n" + line);
                     break;
@@ -91,6 +96,7 @@ public class Squid {
                     String from = parts[1].substring(fromIndex + 6, toIndex).trim();
                     String to = parts[1].substring(toIndex + 4).trim();
                     tasks.add(new Event(description, from, to));
+                    storage.saveTasksToFile(tasks);
                     System.out.println(line + "Got it. I've added this task:\n" + new Event(description, from, to) + "\nNow you have "
                             + tasks.size() + " tasks in the list.\n" + line);
                     break;
@@ -105,6 +111,7 @@ public class Squid {
                     }
                     Task curr = tasks.get(index);
                     curr.setDone();
+                    storage.saveTasksToFile(tasks);
                     System.out.println(line + "Nice! I've marked this task as done:\n");
                     System.out.println(curr + "\n" + line);
                     break;
@@ -119,6 +126,7 @@ public class Squid {
                     }
                     Task curr = tasks.get(index);
                     curr.setNotDone();
+                    storage.saveTasksToFile(tasks);
                     System.out.println(line + "OK, I've marked this task as not done yet:\n");
                     System.out.println(curr + "\n" + line);
                     break;

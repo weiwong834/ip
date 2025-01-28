@@ -7,6 +7,31 @@ public class Task {
         this.isDone = false;
     }
 
+    public static Task parse(String line) {
+        String[] parts = line.split("\\|");
+        for (int i = 0; i < parts.length; i++) {
+            parts[i] = parts[i].trim();
+        }
+
+        String type = parts[0];
+        boolean isDone = parts[1].equals("1");
+        String description = parts[2];
+
+        switch (type) {
+            case "T":
+                return new Todo(description, isDone);
+            case "D":
+                String by = parts[3];
+                return new Deadline(description, by, isDone);
+            case "E":
+                String from = parts[3];
+                String to = parts[4];
+                return new Event(description, from, to, isDone);
+            default:
+                throw new IllegalArgumentException("Invalid task type: " + type);
+        }
+    }
+
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
     }
@@ -17,6 +42,10 @@ public class Task {
 
     public void setNotDone () {
         isDone = false;
+    }
+
+    public String toFileFormat() {
+        return "T | " + (isDone ? "1" : "0") + " | " + description;
     }
 
     @Override

@@ -1,0 +1,3 @@
+T | 0 | run
+D | 0 | walk | tmr
+E | 0 | workshop | 1pm | 5pm
