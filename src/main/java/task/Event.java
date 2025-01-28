@@ -1,3 +1,5 @@
+package task;
+
 public class Event extends Task {
     protected String from;
     protected String to;
@@ -6,6 +8,18 @@ public class Event extends Task {
         super(description);
         this.from = from;
         this.to = to;
+    }
+
+    public Event(String description, String from, String to, boolean isDone) {
+        super(description);
+        this.from = from;
+        this.to = to;
+        this.isDone = isDone;
+    }
+
+    @Override
+    public String toFileFormat() {
+        return "E | " + (isDone ? "1" : "0") + " | " + description + " | " + from + " | " + to;
     }
 
     @Override
