@@ -15,7 +15,8 @@ public class Squid {
                         + " What can I do for you?\n";
         String goodbye = " Bye. Hope to see you again soon!\n";
 
-        System.out.println(line + greeting + line);
+
+        System.out.println(line + greeting + line); // print greetings
 
         while (true) {
             String input = sc.nextLine().trim();
