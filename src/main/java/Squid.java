@@ -6,6 +6,10 @@ import task.Todo;
 import java.util.List;
 import java.util.Scanner;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 public class Squid {
     public enum CommandType {
         BYE, LIST, DELETE, TODO, DEADLINE, EVENT, MARK, UNMARK
@@ -15,6 +19,7 @@ public class Squid {
         Scanner sc = new Scanner(System.in);
         TaskStorage storage = new TaskStorage("./data/squid.txt");
         List<Task> tasks = storage.loadTasksFromFile();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         String line = "____________________________________________________________\n";
         String greeting = " Hello! I'm Squid\n"
@@ -81,11 +86,12 @@ public class Squid {
                 }
                 case DEADLINE: {
                     if (parts.length < 2 || !parts[1].contains("/by")) {
-                        throw new SquidException("Usage: deadline (description) /by (deadline)");
+                        throw new SquidException("Usage: deadline (description) /by yyyy-mm-dd (24h time; e.g. 1600)");
                     }
                     int byIndex = parts[1].indexOf("/by");
                     String description = parts[1].substring(0, byIndex).trim();
-                    String by = parts[1].substring(byIndex + 4).trim();
+                    String byString = parts[1].substring(byIndex + 4).trim();
+                    LocalDate by = LocalDate.parse(byString, formatter);
                     tasks.add(new Deadline(description, by));
                     storage.saveTasksToFile(tasks);
                     System.out.println(line + "Got it. I've added this task:\n" + new Deadline(description, by) + "\nNow you have "
@@ -99,8 +105,10 @@ public class Squid {
                     int fromIndex = parts[1].indexOf("/from");
                     int toIndex = parts[1].indexOf("/to");
                     String description = parts[1].substring(0, fromIndex).trim();
-                    String from = parts[1].substring(fromIndex + 6, toIndex).trim();
-                    String to = parts[1].substring(toIndex + 4).trim();
+                    String fromString = parts[1].substring(fromIndex + 6, toIndex).trim();
+                    String toString = parts[1].substring(toIndex + 4).trim();
+                    LocalDate from = LocalDate.parse(fromString, formatter);
+                    LocalDate to = LocalDate.parse(toString, formatter);
                     tasks.add(new Event(description, from, to));
                     storage.saveTasksToFile(tasks);
                     System.out.println(line + "Got it. I've added this task:\n" + new Event(description, from, to) + "\nNow you have "

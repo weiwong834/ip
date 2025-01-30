@@ -1,16 +1,19 @@
 package task;
 
-public class Event extends Task {
-    protected String from;
-    protected String to;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-    public Event(String description, String from, String to) {
+public class Event extends Task {
+    protected LocalDate from;
+    protected LocalDate to;
+
+    public Event(String description, LocalDate from, LocalDate to) {
         super(description);
         this.from = from;
         this.to = to;
     }
 
-    public Event(String description, String from, String to, boolean isDone) {
+    public Event(String description, LocalDate from, LocalDate to, boolean isDone) {
         super(description);
         this.from = from;
         this.to = to;
@@ -19,11 +22,13 @@ public class Event extends Task {
 
     @Override
     public String toFileFormat() {
-        return "E | " + (isDone ? "1" : "0") + " | " + description + " | " + from + " | " + to;
+        return "E | " + (isDone ? "1" : "0") + " | " + description + " | " + from.format(DateTimeFormatter.ISO_LOCAL_DATE)
+                    + " | " + to.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+        return "[E]" + super.toString() + " (from: " + from.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + " to: "
+                    + to.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
 }
