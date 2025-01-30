@@ -6,9 +6,8 @@ import task.Todo;
 import java.util.List;
 import java.util.Scanner;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 public class Squid {
     public enum CommandType {
@@ -19,7 +18,7 @@ public class Squid {
         Scanner sc = new Scanner(System.in);
         TaskStorage storage = new TaskStorage("./data/squid.txt");
         List<Task> tasks = storage.loadTasksFromFile();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
         String line = "____________________________________________________________\n";
         String greeting = " Hello! I'm Squid\n"
@@ -91,7 +90,7 @@ public class Squid {
                     int byIndex = parts[1].indexOf("/by");
                     String description = parts[1].substring(0, byIndex).trim();
                     String byString = parts[1].substring(byIndex + 4).trim();
-                    LocalDate by = LocalDate.parse(byString, formatter);
+                    LocalDateTime by = LocalDateTime.parse(byString, formatter);
                     tasks.add(new Deadline(description, by));
                     storage.saveTasksToFile(tasks);
                     System.out.println(line + "Got it. I've added this task:\n" + new Deadline(description, by) + "\nNow you have "
@@ -107,8 +106,8 @@ public class Squid {
                     String description = parts[1].substring(0, fromIndex).trim();
                     String fromString = parts[1].substring(fromIndex + 6, toIndex).trim();
                     String toString = parts[1].substring(toIndex + 4).trim();
-                    LocalDate from = LocalDate.parse(fromString, formatter);
-                    LocalDate to = LocalDate.parse(toString, formatter);
+                    LocalDateTime from = LocalDateTime.parse(fromString, formatter);
+                    LocalDateTime to = LocalDateTime.parse(toString, formatter);
                     tasks.add(new Event(description, from, to));
                     storage.saveTasksToFile(tasks);
                     System.out.println(line + "Got it. I've added this task:\n" + new Event(description, from, to) + "\nNow you have "

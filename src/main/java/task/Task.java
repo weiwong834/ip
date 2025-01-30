@@ -1,7 +1,7 @@
 package task;
 
 import java.sql.Date;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Task {
@@ -22,17 +22,17 @@ public class Task {
         String type = parts[0];
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
         switch (type) {
             case "T":
                 return new Todo(description, isDone);
             case "D":
-                LocalDate by = LocalDate.parse(parts[3], formatter);
+                LocalDateTime by = LocalDateTime.parse(parts[3], formatter);
                 return new Deadline(description, by, isDone);
             case "E":
-                LocalDate from = LocalDate.parse(parts[3], formatter);
-                LocalDate to = LocalDate.parse(parts[4], formatter);
+                LocalDateTime from = LocalDateTime.parse(parts[3], formatter);
+                LocalDateTime to = LocalDateTime.parse(parts[4], formatter);
                 return new Event(description, from, to, isDone);
             default:
                 throw new IllegalArgumentException("Invalid task type: " + type);
