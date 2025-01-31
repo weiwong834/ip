@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class TaskStorage {
+public class Storage {
     private String filePath;
 
-    public TaskStorage(String filePath) {
+    public Storage(String filePath) {
         this.filePath = filePath;
         createFileIfNotExist();
     }

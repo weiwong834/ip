@@ -17,7 +17,7 @@ public class Squid {
 
     public static void main(String[] args) throws SquidException {
         Scanner sc = new Scanner(System.in);
-        TaskStorage storage = new TaskStorage("./data/squid.txt");
+        Storage storage = new Storage("./data/squid.txt");
         List<Task> tasks = storage.loadTasksFromFile();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
