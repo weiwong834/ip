@@ -17,6 +17,10 @@ public class Deadline extends Task {
         this.isDone = isDone;
     }
 
+    public LocalDateTime getBy() {
+        return by;
+    }
+
     @Override
     public String toFileFormat() {
         return "D | " + (isDone ? "1" : "0") + " | " + description + " | " + by.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));

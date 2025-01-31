@@ -3,6 +3,7 @@ import task.Event;
 import task.Task;
 import task.Todo;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Squid {
     public enum CommandType {
-        BYE, LIST, DELETE, TODO, DEADLINE, EVENT, MARK, UNMARK
+        BYE, LIST, DELETE, TODO, DEADLINE, EVENT, MARK, UNMARK, SHOW
     }
 
     public static void main(String[] args) throws SquidException {
@@ -58,6 +59,32 @@ public class Squid {
                     System.out.println(line);
                     break;
                 }
+                case SHOW: {
+                    if (parts.length < 2) {
+                        throw new SquidException("Usage: show (YYYY-MM-DD)");
+                    }
+                    LocalDate queryDate = LocalDate.parse(parts[1], DateTimeFormatter.ISO_LOCAL_DATE);
+                    System.out.println("Tasks on " + queryDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ":\n");
+                    boolean found = false;
+                    for (Task task : tasks) {
+                        if (task instanceof Deadline && ((Deadline) task).getBy().toLocalDate().equals(queryDate)) {
+                            System.out.println(task);
+                            found = true;
+                        }
+                        if (task instanceof Event) {
+                            Event event = (Event) task;
+                            if (!event.getFrom().toLocalDate().isAfter(queryDate) && !event.getTo().toLocalDate().isBefore(queryDate)) {
+                                System.out.println(task);
+                                found = true;
+                            }
+                        }
+                    }
+                    if (!found) {
+                        System.out.println("No tasks found on this date");
+                    }
+                    System.out.println(line);
+                    break;
+                }
                 case DELETE: {
                     if (parts.length < 2) {
                         throw new SquidException("Usage: delete (task number)");
@@ -85,7 +112,7 @@ public class Squid {
                 }
                 case DEADLINE: {
                     if (parts.length < 2 || !parts[1].contains("/by")) {
-                        throw new SquidException("Usage: deadline (description) /by yyyy-mm-dd (24h time; e.g. 1600)");
+                        throw new SquidException("Usage: deadline (description) /by (yyyy-mm-dd HHmm)");
                     }
                     int byIndex = parts[1].indexOf("/by");
                     String description = parts[1].substring(0, byIndex).trim();
@@ -99,7 +126,7 @@ public class Squid {
                 }
                 case EVENT: {
                     if (parts.length < 2 || !parts[1].contains("/from") || !parts[1].contains("/to")) {
-                        throw new SquidException("Usage: event (description) /from (start) /to (end)");
+                        throw new SquidException("Usage: event (description) /from (yyyy-mm-dd HHmm) /to (yyyy-mm-dd HHmm)");
                     }
                     int fromIndex = parts[1].indexOf("/from");
                     int toIndex = parts[1].indexOf("/to");
