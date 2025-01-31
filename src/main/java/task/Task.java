@@ -1,5 +1,8 @@
 package task;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Task {
     protected String description;
     protected boolean isDone;
@@ -18,16 +21,17 @@ public class Task {
         String type = parts[0];
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
         switch (type) {
             case "T":
                 return new Todo(description, isDone);
             case "D":
-                String by = parts[3];
+                LocalDateTime by = LocalDateTime.parse(parts[3], formatter);
                 return new Deadline(description, by, isDone);
             case "E":
-                String from = parts[3];
-                String to = parts[4];
+                LocalDateTime from = LocalDateTime.parse(parts[3], formatter);
+                LocalDateTime to = LocalDateTime.parse(parts[4], formatter);
                 return new Event(description, from, to, isDone);
             default:
                 throw new IllegalArgumentException("Invalid task type: " + type);
