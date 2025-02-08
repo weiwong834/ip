@@ -3,7 +3,8 @@ package squid;
 import command.Command;
 import command.ExitCommand;
 import exceptions.SquidException;
-import task.*;
+import task.Storage;
+import task.TaskList;
 
 /**
  * The Squid class is the main class of the application that manages the overall
