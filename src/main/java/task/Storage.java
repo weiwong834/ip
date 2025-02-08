@@ -34,7 +34,7 @@ public class Storage {
         try (Scanner scanner = new Scanner(file)) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                tasks.add(Task.parse(line)); // You will need a method in task.Task to parse lines from the file
+                tasks.add(Task.parse(line));
             }
         } catch (FileNotFoundException e) {
             System.out.println("File not found, starting with an empty task list.");
@@ -45,7 +45,7 @@ public class Storage {
     public void saveTasksToFile(List<Task> tasks) {
         try (PrintWriter writer = new PrintWriter(filePath)) {
             for (Task task : tasks) {
-                writer.println(task.toFileFormat()); // task.Task must override toString to format for file saving
+                writer.println(task.toFileFormat());
             }
         } catch (FileNotFoundException e) {
             System.out.println("Error writing to file.");

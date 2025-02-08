@@ -3,7 +3,8 @@ package squid;
 import command.Command;
 import command.ExitCommand;
 import exceptions.SquidException;
-import task.*;
+import task.Storage;
+import task.TaskList;
 
 public class Squid {
     private Storage storage;

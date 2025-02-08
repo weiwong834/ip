@@ -1,14 +1,13 @@
 package squid;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Scanner;
+
 import task.Deadline;
 import task.Event;
 import task.Task;
 import task.TaskList;
-import task.Todo;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Scanner;
 
 public class Ui {
 
@@ -72,13 +71,15 @@ public class Ui {
         System.out.println("Task on " + date + ":");
         boolean found = false;
         for (Task task : tasks.getAllTasks()) {
-            if (task instanceof Deadline && ((Deadline) task).getBy().toLocalDate().equals(date)) {
+            if (task instanceof Deadline
+                    && ((Deadline) task).getBy().toLocalDate().equals(date)) {
                 System.out.println(task);
                 found = true;
             }
             if (task instanceof Event) {
                 Event event = (Event) task;
-                if (!event.getFrom().toLocalDate().isAfter(date) && !event.getTo().toLocalDate().isBefore(date)) {
+                if (!event.getFrom().toLocalDate().isAfter(date)
+                        && !event.getTo().toLocalDate().isBefore(date)) {
                     System.out.println(task);
                     found = true;
                 }
