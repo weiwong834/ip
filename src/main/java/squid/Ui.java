@@ -49,7 +49,7 @@ public class Ui {
 
     public void showTaskDeleted(Task task, int remainingTask) {
         System.out.println("Task removed: " + task);
-        System.out.printf("Remaining tasks: " +task);
+        System.out.printf("Remaining tasks: " + remainingTask + "\n");
         showLine();
     }
 
