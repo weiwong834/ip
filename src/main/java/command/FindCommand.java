@@ -32,5 +32,6 @@ public class FindCommand extends Command{
                 System.out.println((i + 1) + ". " + matchingTasks.get(i));
             }
         }
+        ui.showLine();
     }
 }

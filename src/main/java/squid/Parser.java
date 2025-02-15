@@ -10,6 +10,7 @@ import command.DeadlineCommand;
 import command.DeleteCommand;
 import command.EventCommand;
 import command.ExitCommand;
+import command.FindCommand;
 import command.ListCommand;
 import command.MarkCommand;
 import command.ShowCommand;
@@ -23,7 +24,7 @@ import command.Command;
  */
 public class Parser {
     public enum CommandType {
-        LIST, BYE, DELETE, MARK, UNMARK, TODO, DEADLINE, EVENT, SHOW, CLEAR
+        LIST, BYE, DELETE, MARK, UNMARK, TODO, DEADLINE, EVENT, SHOW, CLEAR, FIND
     }
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
@@ -53,13 +54,13 @@ public class Parser {
         case BYE:
             return new ExitCommand();
         case DELETE:
-            parseDeleteCommand(args);
+            return parseDeleteCommand(args);
         case MARK:
-            parseMarkCommand(args);
+            return parseMarkCommand(args);
         case UNMARK:
-            parseUnmarkCommand(args);
+            return parseUnmarkCommand(args);
         case TODO:
-            parseTodoCommand(args);
+            return parseTodoCommand(args);
         case DEADLINE:
             return parseDeadlineCommand(args);
         case EVENT:
@@ -68,9 +69,18 @@ public class Parser {
             return parseShowCommand(args);
         case CLEAR:
             return new ClearCommand();
+        case FIND:
+            return parseFindCommand(args);
         default:
             throw new SquidException("I'm sorry, but I don't know what that means :(");
         }
+    }
+
+    private static Command parseFindCommand(String args) throws SquidException{
+        if (args.isEmpty()) {
+            throw new SquidException("Usage: find <keyword>");
+        }
+        return new FindCommand(args);
     }
 
     private static Command parseDeleteCommand(String args) throws SquidException {
@@ -125,7 +135,7 @@ public class Parser {
         String byString = args.substring(byIndex + 4).trim();
         LocalDateTime by = LocalDateTime.parse(byString, formatter);
         return new DeadlineCommand(description, by);
-        }
+    }
 
     private static Command parseEventCommand(String args) throws SquidException, DateTimeParseException{
         if (!args.contains("/from") || !args.contains("/to")) {

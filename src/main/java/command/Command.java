@@ -5,12 +5,12 @@ import squid.Ui;
 import task.Storage;
 import task.TaskList;
 
-/**
- * Represents an abstract command within the application.
- * This class serves as a base for all command types that can be executed.
- * Each specific command will extend this class and implement its execution logic
- * through the {@code execute} method.
- */
+ /**
+  * Represents an abstract command within the application.
+  * This class serves as a base for all command types that can be executed.
+  * Each specific command will extend this class and implement its execution logic
+  * through the {@code execute} method.
+  */
  public abstract class Command {
     /**
      * Executes the command with the context in which it is called.

@@ -55,7 +55,7 @@ public class ShowCommand extends Command{
             System.out.println("No tasks found on this date");
         }
 
-//        ui.showTasksOnDate(date, tasks);
+        ui.showLine();
     }
 
     private boolean isTaskOnDate(Task task) {

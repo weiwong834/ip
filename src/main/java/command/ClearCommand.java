@@ -10,7 +10,7 @@ import task.TaskList;
  * This command handles clearing the current list of tasks
  * and updating the UI and storage to reflect the changes.
  */
-public class ClearCommand extends Command{
+public class ClearCommand extends Command {
     /**
      * Executes the clear command which involves clearing all tasks from the task list,
      * saving the empty state to storage, and updating the user interface.
