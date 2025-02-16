@@ -1,6 +1,5 @@
 package command;
 
-import exceptions.SquidException;
 import squid.Ui;
 import task.Storage;
 import task.TaskList;
@@ -30,12 +29,13 @@ public class TodoCommand extends Command{
      * @param tasks   The list of tasks to which the new todo will be added.
      * @param ui      The user interface component to display messages.
      * @param storage The storage component responsible for saving tasks data.
+     * @return A string indicating a todo task is added.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         Todo newTodo = new Todo(description);
         tasks.addTask(newTodo);
         storage.saveTasksToFile(tasks.getAllTasks());
-        ui.showTaskAdded(newTodo, tasks.getSize());
+        return ui.showTaskAdded(newTodo, tasks.getSize());
     }
 }

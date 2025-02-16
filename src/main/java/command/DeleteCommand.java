@@ -1,6 +1,5 @@
 package command;
 
-import exceptions.SquidException;
 import squid.Ui;
 import task.Storage;
 import task.Task;
@@ -29,21 +28,12 @@ public class DeleteCommand extends Command{
      * @param tasks   The list of tasks from which the task will be deleted.
      * @param ui      The user interface component to display messages.
      * @param storage The storage component responsible for saving tasks data.
-     * @throws SquidException If the index is invalid or an error occurs during deletion.
+     * @return A string to indicate task is removed.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SquidException{
-        try {
-            if (index < 0 || index > tasks.getSize()) {
-                ui.showError("Invalid task number");
-                return;
-            }
-
-            Task removedTask = tasks.removeTask(index - 1);
-            ui.showTaskDeleted(removedTask, tasks.getSize());
-            storage.saveTasksToFile(tasks.getAllTasks());
-        } catch (IndexOutOfBoundsException e) {
-            throw new SquidException("Invalid index");
-        }
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
+        Task removedTask = tasks.removeTask(index);
+        storage.saveTasksToFile(tasks.getAllTasks());
+        return ui.showTaskDeleted(removedTask, tasks.getSize());
     }
 }

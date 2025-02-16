@@ -1,8 +1,6 @@
 package command;
 
-import exceptions.SquidException;
 import squid.Ui;
-import task.Deadline;
 import task.Event;
 import task.Storage;
 import task.TaskList;
@@ -39,17 +37,13 @@ public class EventCommand extends Command{
      * @param tasks   The list of tasks to which the new event will be added.
      * @param ui      The user interface component to display messages.
      * @param storage The storage component responsible for saving tasks data.
-     * @throws SquidException If the description is empty or the event time is null.
+     * @return A string to indicate an event task is added.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SquidException {
-        if (description.isEmpty() || from == null || to == null) {
-            throw new SquidException("Invalid event command format.");
-        }
-
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         Event newEvent = new Event(description, from, to);
         tasks.addTask(newEvent);
         storage.saveTasksToFile(tasks.getAllTasks());
-        ui.showTaskAdded(newEvent, tasks.getSize());
+        return ui.showTaskAdded(newEvent, tasks.getSize());
     }
 }

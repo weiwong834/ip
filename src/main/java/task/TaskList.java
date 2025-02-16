@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import exceptions.AlreadyMarkedException;
+import exceptions.AlreadyUnmarkedException;
+
 public class TaskList {
-    private List<Task> tasks;
+    private static List<Task> tasks;
 
     public TaskList() {
         this.tasks = new ArrayList<>();
@@ -31,7 +34,7 @@ public class TaskList {
         return Collections.unmodifiableList(tasks);
     }
 
-    public int getSize() {
+    public static int getSize() {
         return tasks.size();
     }
 
@@ -39,11 +42,19 @@ public class TaskList {
         tasks.clear();
     }
 
-    public void markTask(int i) {
-        getTask(i).setDone();
+    public void markTask(int index) throws AlreadyMarkedException {
+        Task task = tasks.get(index);
+        if (task.isDone()) {
+            throw new AlreadyMarkedException("Task already marked as done");
+        }
+        task.setDone();
     }
 
-    public void unmarkTask(int i) {
-        getTask(i).setNotDone();
+    public void unmarkTask(int index) throws AlreadyUnmarkedException {
+        Task task = tasks.get(index);
+        if (!task.isDone()) {
+            throw new AlreadyUnmarkedException("Task already marked as done");
+        }
+        task.setNotDone();
     }
 }
