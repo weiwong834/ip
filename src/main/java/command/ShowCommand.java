@@ -57,15 +57,17 @@ public class ShowCommand extends Command{
     }
 
     private boolean isTaskOnDate(Task task) {
-        if (task instanceof Deadline
-                && ((Deadline) task).getBy().toLocalDate().equals(date)) {
-            return true;
-        }
+        boolean isDeadlineOnDate = task instanceof Deadline
+                && ((Deadline) task).getBy().toLocalDate().equals(date);
+
+        boolean isEventOnDate = false;
         if (task instanceof Event) {
             Event event = (Event) task;
-            return !event.getFrom().toLocalDate().isAfter(date)
-                    && !event.getTo().toLocalDate().isBefore(date);
+            boolean startsBeforeOrOnDate = !event.getFrom().toLocalDate().isAfter(date);
+            boolean endsAfterOrOnDate = !event.getTo().toLocalDate().isBefore(date);
+            isEventOnDate = startsBeforeOrOnDate && endsAfterOrOnDate;
         }
-        return false;
+
+        return isDeadlineOnDate || isEventOnDate;
     }
 }
