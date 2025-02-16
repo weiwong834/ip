@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.Objects;
 
 import command.ClearCommand;
 import command.DeadlineCommand;
@@ -39,6 +40,8 @@ public class Parser {
      * @throws SquidException if the command is unknown or the arguments are incorrect.
      */
     public static Command parse(String input) throws SquidException {
+        assert !Objects.equals(input, "") : "Input should not be null";
+        
         String[] words = input.trim().split("\\s+", 2);
         String commandWord = words[0].toLowerCase();
         String args = words.length > 1 ? words[1] : "";
