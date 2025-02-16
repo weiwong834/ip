@@ -1,108 +1,58 @@
 package squid;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Scanner;
 
-import task.Deadline;
-import task.Event;
 import task.Task;
-import task.TaskList;
 
 public class Ui {
 
-    public void showGreeting() {
-        showLine();
-        System.out.println("Hello! I'm Squid\nWhat can I do for you?");
-        showLine();
+    public static String showGreeting() {
+        return "Hello! I'm Squid\nWhat can I do for you?";
     }
 
-    public void showBye() {
-        System.out.println("Bye. Hope to see you again soon!");
-        showLine();
+    public String showBye() {
+        return "Bye!";
     }
 
-    public void showLine() {
-        System.out.println("____________________________________________________________");
+    public String showError(String message) {
+        return "Error: " + message;
     }
 
-    public void showError(String message) {
-        System.out.println("Error: " + message);
-        showLine();
-    }
-
-    public void showTasks(List<Task> allTasks) {
+    public String showTasks(List<Task> allTasks) {
         if (allTasks.isEmpty()) {
-            System.out.println("You task list is empty!");
-            showLine();
+            return  "Your task list is empty!";
         } else {
-            System.out.println("Here are your tasks:");
+            StringBuilder sb = new StringBuilder("Here are your tasks:\n");
             int index = 1;
             for (Task task : allTasks) {
-                System.out.println(index + ". " + task);
+                sb.append(index + ". " + task + "\n");
                 index++;
             }
-            showLine();
+            return sb.toString();
         }
     }
 
-    public void showTaskDeleted(Task task, int remainingTask) {
-        System.out.println("Task removed: " + task);
-        System.out.printf("Remaining tasks: " + remainingTask + "\n");
-        showLine();
+    public String showTaskDeleted(Task task, int remainingTask) {
+        StringBuilder sb = new StringBuilder("Task removed:\n" + task + "\n");
+        sb.append("Remaining tasks: " + remainingTask);
+        return sb.toString();
     }
 
-    public void showLoadingError() {
-        System.out.println("Error loading file");
+    public String showTaskAdded(Task task, int size) {
+        StringBuilder sb = new StringBuilder("Ok! I have added:\n" + task + "\n");
+        sb.append("Now you have " + size + " tasks!");
+        return sb.toString();
     }
 
-    public String readCommand() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+    public String showTasklistClear() {
+        return  "Task list cleared!";
     }
 
-    public void showTaskAdded(Task task, int size) {
-        System.out.println("Ok! I have added: " + task);
-        System.out.println("Now you have " + size + " tasks!");
-        showLine();
+    public String showTaskMark() {
+        return "Marked as done!";
     }
 
-    public void showTasksOnDate(LocalDate date, TaskList tasks) {
-        System.out.println("Task on " + date + ":");
-        boolean found = false;
-        for (Task task : tasks.getAllTasks()) {
-            if (task instanceof Deadline
-                    && ((Deadline) task).getBy().toLocalDate().equals(date)) {
-                System.out.println(task);
-                found = true;
-            }
-            if (task instanceof Event) {
-                Event event = (Event) task;
-                if (!event.getFrom().toLocalDate().isAfter(date)
-                        && !event.getTo().toLocalDate().isBefore(date)) {
-                    System.out.println(task);
-                    found = true;
-                }
-            }
-        }
-        if (!found) {
-            System.out.println("No tasks found on this date");
-        }
-        showLine();
-    }
-
-    public void showTasklistClear() {
-        System.out.println("Task list cleared!");
-        showLine();
-    }
-
-    public void showTaskMark(Task markedTask, int size) {
-        System.out.println("Marked as done!");
-        showLine();
-    }
-
-    public void showTaskUnmark(Task unmarkedTask, int size) {
-        System.out.println("Marked as undone");
-        showLine();
+    public String showTaskUnmark() {
+        return "Marked as undone";
     }
 }

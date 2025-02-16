@@ -1,9 +1,8 @@
 package command;
 
-import exceptions.SquidException;
+import exceptions.AlreadyUnmarkedException;
 import squid.Ui;
 import task.Storage;
-import task.Task;
 import task.TaskList;
 
 /**
@@ -11,7 +10,7 @@ import task.TaskList;
  * This command changes the state of a specified task to 'undone'.
  */
 public class UnmarkCommand extends Command{
-    private Integer index;
+    private int index;
 
     /**
      * Constructs a MarkCommand with the specified index of the task to be marked as done.
@@ -19,7 +18,7 @@ public class UnmarkCommand extends Command{
      * @param taskNum The task number in the task list that should be marked as undone.
      */
     public UnmarkCommand(int taskNum) {
-        this.index = taskNum - 1;
+        this.index = taskNum;
     }
 
     /**
@@ -30,22 +29,16 @@ public class UnmarkCommand extends Command{
      * @param tasks   The list of tasks, one of which will be marked as done.
      * @param ui      The user interface component that will display the outcome of the action.
      * @param storage The storage component that saves the updated task list after marking the task.
-     * @throws SquidException If the specified index is invalid, this exception is thrown with a specific error message.
+     * @return A string to indicate task is unmarked.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SquidException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         try {
-            if (index < 0 || index >= tasks.getSize()) {
-                ui.showError("Invalid task number");
-                return;
-            }
-
             tasks.unmarkTask(index);
-            Task unmarkedTask = tasks.getTask(index);
-            ui.showTaskUnmark(unmarkedTask, tasks.getSize());
             storage.saveTasksToFile(tasks.getAllTasks());
-        } catch (IndexOutOfBoundsException e) {
-            throw new SquidException("Invalid index");
+            return ui.showTaskUnmark();
+        } catch (AlreadyUnmarkedException e) {
+            return ui.showError("Already unmarked previously");
         }
     }
 }

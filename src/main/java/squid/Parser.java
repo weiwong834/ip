@@ -11,6 +11,7 @@ import command.DeleteCommand;
 import command.EventCommand;
 import command.ExitCommand;
 import command.FindCommand;
+import command.IncorrectCommand;
 import command.ListCommand;
 import command.MarkCommand;
 import command.ShowCommand;
@@ -18,6 +19,7 @@ import command.TodoCommand;
 import command.UnmarkCommand;
 import exceptions.SquidException;
 import command.Command;
+import task.TaskList;
 
 /**
  * Parses user input into command for execution.
@@ -45,7 +47,7 @@ public class Parser {
         try {
             commandType = CommandType.valueOf(commandWord.toUpperCase());
         }  catch (IllegalArgumentException e) {
-            throw new SquidException("idk what that means.");
+            return new IncorrectCommand("idk what that means :(");
         }
 
         switch (commandType) {
@@ -72,91 +74,108 @@ public class Parser {
         case FIND:
             return parseFindCommand(args);
         default:
-            throw new SquidException("I'm sorry, but I don't know what that means :(");
+            return new IncorrectCommand("I'm sorry, but I don't know what that means :(");
         }
     }
 
-    private static Command parseFindCommand(String args) throws SquidException{
+    private static Command parseFindCommand(String args) {
         if (args.isEmpty()) {
-            throw new SquidException("Usage: find <keyword>");
+            return new IncorrectCommand("Usage: find <keyword>");
         }
         return new FindCommand(args);
     }
 
-    private static Command parseDeleteCommand(String args) throws SquidException {
+    private static Command parseDeleteCommand(String args) {
         if (args.isEmpty()) {
-            throw new SquidException("Usage: delete <index>");
+            return new IncorrectCommand("Usage: delete <index>");
         }
         try {
-            int index = Integer.parseInt(args);
+            int index = Integer.parseInt(args) - 1;
+            if (index < 0 || index >= TaskList.getSize()) {
+                return new IncorrectCommand("Invalid task number: " + (index + 1));
+            }
             return new DeleteCommand(index);
         } catch (NumberFormatException e) {
-            throw new SquidException("Usage: delete <index> - Index must be a number.");
+            return new IncorrectCommand("Usage: delete <index> - Index must be a number.");
         }
     }
 
     private static Command parseMarkCommand(String args) throws SquidException{
         if (args.isEmpty()) {
-            throw new SquidException("Usage: mark <index>");
+            return new IncorrectCommand("Usage: mark <index>");
         }
         try {
-            int index = Integer.parseInt(args);
+            int index = Integer.parseInt(args) - 1;
+            if (index < 0 || index >= TaskList.getSize()) {
+                return new IncorrectCommand("Invalid task number: " + (index + 1));
+            }
             return new MarkCommand(index);
         } catch (NumberFormatException e) {
-            throw new SquidException("Usage: mark <index> - Index must be a number.");
+            return new IncorrectCommand("Usage: mark <index> - Index must be a number.");
         }
     }
 
     private static Command parseUnmarkCommand(String args) throws SquidException{
         if (args.isEmpty()) {
-            throw new SquidException("Usage: unmark <index>");
+            return new IncorrectCommand("Usage: unmark <index>");
         }
         try {
-            int index = Integer.parseInt(args);
+            int index = Integer.parseInt(args) - 1;
+            if (index < 0 || index >= TaskList.getSize()) {
+                return new IncorrectCommand("Invalid task number: " + (index + 1));
+            }
             return new UnmarkCommand(index);
         } catch (NumberFormatException e) {
-            throw new SquidException("Usage: unmark <index> - Index must be a number.");
+            return new IncorrectCommand("Usage: unmark <index> - Index must be a number.");
         }
     }
 
-    private static Command parseTodoCommand(String args) throws SquidException{
+    private static Command parseTodoCommand(String args) {
         if (args.isEmpty()) {
-            throw new SquidException("Usage: todo <description>");
+            return new IncorrectCommand("Usage: todo <description>");
         }
         return new TodoCommand(args);
     }
 
     private static Command parseDeadlineCommand(String args) throws DateTimeParseException{
         if (!args.contains("/by")) {
-            System.out.println("Usage: deadline <description> /by <yyyy-mm-dd HHmm>");
+            return new IncorrectCommand("Usage: deadline <description> /by <yyyy-mm-dd HHmm>");
         }
         int byIndex = args.indexOf("/by");
         String description = args.substring(0, byIndex).trim();
         String byString = args.substring(byIndex + 4).trim();
-        LocalDateTime by = LocalDateTime.parse(byString, formatter);
-        return new DeadlineCommand(description, by);
+        try {
+            LocalDateTime by = LocalDateTime.parse(byString, formatter);
+            return new DeadlineCommand(description, by);
+        } catch (DateTimeParseException e) {
+            return new IncorrectCommand("Invalid date and time format. Please use format: yyyy-mm-dd HHmm.");
+        }
     }
 
-    private static Command parseEventCommand(String args) throws SquidException, DateTimeParseException{
+    private static Command parseEventCommand(String args) throws DateTimeParseException{
         if (!args.contains("/from") || !args.contains("/to")) {
-            throw new SquidException("Usage: event <description> /from <yyyy-mm-dd HHmm> /to <yyyy-mm-dd HHmm>");
+            return new IncorrectCommand("Usage: event <description> /from <yyyy-mm-dd HHmm> /to <yyyy-mm-dd HHmm>");
         }
         int fromIndex = args.indexOf("/from");
         int toIndex = args.indexOf("/to");
         String description = args.substring(0, fromIndex).trim();
         String fromString = args.substring(fromIndex + 6, toIndex).trim();
         String toString = args.substring(toIndex + 4).trim();
-        LocalDateTime from = LocalDateTime.parse(fromString, formatter);
-        LocalDateTime to = LocalDateTime.parse(toString, formatter);
-        return new EventCommand(description, from, to);
+        try {
+            LocalDateTime from = LocalDateTime.parse(fromString, formatter);
+            LocalDateTime to = LocalDateTime.parse(toString, formatter);
+            return new EventCommand(description, from, to);
+        } catch (DateTimeParseException e) {
+            return new IncorrectCommand("Invalid date and time format. Please use format: yyyy-mm-dd HHmm.");
+        }
     }
 
-    private static Command parseShowCommand(String args) throws SquidException, DateTimeParseException {
+    private static Command parseShowCommand(String args) throws DateTimeParseException {
         try {
             LocalDate date = LocalDate.parse(args, DateTimeFormatter.ISO_LOCAL_DATE);
             return new ShowCommand(date);
         } catch (DateTimeParseException e) {
-            throw new SquidException("Invalid date format. Please use YYYY-MM-DD.");
+            return new IncorrectCommand("Invalid date format. Please use YYYY-MM-DD.");
         }
     }
 }

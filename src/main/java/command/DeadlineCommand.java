@@ -1,6 +1,5 @@
 package command;
 
-import exceptions.SquidException;
 import squid.Ui;
 import task.Deadline;
 import task.Storage;
@@ -35,17 +34,13 @@ public class DeadlineCommand extends Command{
      * @param tasks   The list of tasks to which the new deadline will be added.
      * @param ui      The user interface component to display messages.
      * @param storage The storage component responsible for saving tasks data.
-     * @throws SquidException If the description is empty or the deadline time is null.
+     * @return A string to indicate deadline task added.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SquidException {
-        if (description.isEmpty() || by == null) {
-            throw new SquidException("Invalid deadline command format.");
-        }
-
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         Deadline newDeadline = new Deadline(description, by);
         tasks.addTask(newDeadline);
         storage.saveTasksToFile(tasks.getAllTasks());
-        ui.showTaskAdded(newDeadline, tasks.getSize());
+        return ui.showTaskAdded(newDeadline, tasks.getSize());
     }
 }

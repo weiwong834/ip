@@ -1,6 +1,5 @@
 package command;
 
-import exceptions.SquidException;
 import squid.Ui;
 import task.Storage;
 import task.TaskList;
@@ -18,12 +17,12 @@ public class ClearCommand extends Command {
      * @param tasks   The list of tasks to be cleared.
      * @param ui      The user interface component to interact with the user.
      * @param storage The storage component responsible for file operations.
-     * @throws SquidException If an error occurs during the clearing or saving process.
+     * @return A string indicating tasks are cleared.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SquidException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         tasks.clear();
         storage.saveTasksToFile(tasks.getAllTasks());
-        ui.showTasklistClear();
+        return ui.showTasklistClear();
     }
 }

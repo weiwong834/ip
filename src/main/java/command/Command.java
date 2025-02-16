@@ -1,6 +1,5 @@
 package command;
 
-import exceptions.SquidException;
 import squid.Ui;
 import task.Storage;
 import task.TaskList;
@@ -19,7 +18,7 @@ import task.TaskList;
      * @param tasks   the list of tasks on which the command operates
      * @param ui      the interface to interact with the user
      * @param storage the storage handling tasks persistence
-     * @throws SquidException if an error occurs during command execution
+     * @return A string response by Squid.
      */
-     public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws SquidException;
+     public abstract String execute(TaskList tasks, Ui ui, Storage storage) ;
 }

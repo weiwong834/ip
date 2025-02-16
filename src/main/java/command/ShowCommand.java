@@ -1,9 +1,9 @@
 package command;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-import exceptions.SquidException;
 import squid.Ui;
 import task.Event;
 import task.Storage;
@@ -34,28 +34,26 @@ public class ShowCommand extends Command{
      * @param tasks   The list of tasks from which the task will be deleted.
      * @param ui      The user interface component to display messages.
      * @param storage The storage component responsible for saving tasks data.
-     * @throws SquidException If the index is invalid or an error occurs during deletion.
+     * @return A formatted string listing all matching tasks or a message indicating no matches.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SquidException {
-        List<Task> allTasks = tasks.getAllTasks();
-        boolean isFound = false;
-
-        System.out.println("Task on " + date + ":");
-
-        System.out.println("Tasks on " + date + ":");
-        for (Task task : allTasks) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
+        List<Task> matchingTasks = new ArrayList<>();
+        for (Task task : tasks.getAllTasks()) {
             if (isTaskOnDate(task)) {
-                System.out.println(task);
-                isFound = true;
+                matchingTasks.add(task);
             }
         }
 
-        if (!isFound) {
-            System.out.println("No tasks found on this date");
+        if (matchingTasks.isEmpty()) {
+            return "No tasks found on this date";
+        } else {
+            StringBuilder sb = new StringBuilder("Task on " + date + ":\n");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                sb.append((i + 1) + ". " + matchingTasks.get(i) + "\n");
+            }
+            return sb.toString();
         }
-
-        ui.showLine();
     }
 
     private boolean isTaskOnDate(Task task) {
