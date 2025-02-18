@@ -1,18 +1,18 @@
 package command;
 
+import java.time.LocalDateTime;
+
 import squid.Ui;
 import task.Deadline;
 import task.Storage;
 import task.TaskList;
-
-import java.time.LocalDateTime;
 
 /**
  * Represents a command to add a deadline to the task list.
  * This command encapsulates all details necessary to add the deadline,
  * including its description and due date.
  */
-public class DeadlineCommand extends Command{
+public class DeadlineCommand extends Command {
     private String description;
     private LocalDateTime by;
 

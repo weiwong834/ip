@@ -5,12 +5,11 @@ import task.Storage;
 import task.TaskList;
 import task.Todo;
 
-
 /**
  * Represents a command to add a todo to the task list.
  * This command encapsulates all details necessary to add the todo
  */
-public class TodoCommand extends Command{
+public class TodoCommand extends Command {
     private String description;
 
     /**

@@ -9,7 +9,7 @@ import task.TaskList;
  * Represents a command to mark a task as completed in the task list.
  * This command changes the state of a specified task to 'done'.
  */
-public class MarkCommand extends Command{
+public class MarkCommand extends Command {
     private int index;
 
     /**

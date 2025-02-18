@@ -8,7 +8,7 @@ import task.TaskList;
  * Represents a command to terminate the application.
  * This command handles the termination procedure by triggering bye response.
  */
-public class ExitCommand extends Command{
+public class ExitCommand extends Command {
     /**
      * Executes the command to terminate the application.
      * This method will trigger the UI to display a goodbye message.

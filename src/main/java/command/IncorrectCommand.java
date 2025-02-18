@@ -8,7 +8,7 @@ import task.TaskList;
  * Represents a command for handling incorrect or malformed user input.
  * This command encapsulates a message that explains the correct usage or the error to the user.
  */
-public class IncorrectCommand extends Command{
+public class IncorrectCommand extends Command {
     private String message;
 
     /**

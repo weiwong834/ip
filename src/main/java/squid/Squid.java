@@ -9,9 +9,9 @@ import task.TaskList;
  * The Squid class manages the overall workflow.
  */
 public class Squid {
+    protected Ui ui;
     private Storage storage;
     private TaskList tasks;
-    protected Ui ui;
 
     /**
      * Constructs a new instance of Squid which sets up the user interface, storage,

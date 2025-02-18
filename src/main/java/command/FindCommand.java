@@ -12,7 +12,7 @@ import task.TaskList;
  * Represents a command to find tasks in the task list that contain the specified keyword in their description.
  * This command filters tasks based on the inclusion of a case-insensitive substring within their descriptions.
  */
-public class FindCommand extends Command{
+public class FindCommand extends Command {
     private String keyword;
 
     /**

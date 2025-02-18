@@ -1,13 +1,18 @@
 package task;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Manages loading and saving of tasks to a file.
+ * This class provides the necessary functionality to store task data persistently,
+ * ensuring that tasks are available upon restarting the application.
+ */
 public class Storage {
     private String filePath;
 

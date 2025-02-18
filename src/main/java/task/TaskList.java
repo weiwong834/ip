@@ -7,13 +7,26 @@ import java.util.List;
 import exceptions.AlreadyMarkedException;
 import exceptions.AlreadyUnmarkedException;
 
+/**
+ * Represents a list of tasks with various operations to manipulate tasks.
+ * This class supports addition, removal, and access to tasks based on index positions.
+ * It provides functionality to mark or unmark a task as done.
+ */
 public class TaskList {
     private static List<Task> tasks;
 
+    /**
+     * Initializes an empty list of tasks.
+     */
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
 
+    /**
+     * Initializes the task list with an existing list of tasks.
+     *
+     * @param tasks The initial list of tasks.
+     */
     public TaskList(List<Task> tasks) {
         this.tasks = tasks;
     }
@@ -42,6 +55,12 @@ public class TaskList {
         tasks.clear();
     }
 
+    /**
+     * Marks a specified task as done.
+     *
+     * @param index The index of the task to be marked as done.
+     * @throws AlreadyMarkedException if the task is already marked as done.
+     */
     public void markTask(int index) throws AlreadyMarkedException {
         Task task = tasks.get(index);
         if (task.isDone()) {
@@ -50,6 +69,12 @@ public class TaskList {
         task.setDone();
     }
 
+    /**
+     * Unmarks a specified task as not done.
+     *
+     * @param index The index of the task to be unmarked.
+     * @throws AlreadyUnmarkedException if the task is already unmarked.
+     */
     public void unmarkTask(int index) throws AlreadyUnmarkedException {
         Task task = tasks.get(index);
         if (!task.isDone()) {

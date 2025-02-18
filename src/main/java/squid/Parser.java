@@ -1,13 +1,14 @@
 package squid;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Map;
 import java.util.Objects;
 
 import command.ClearCommand;
+import command.Command;
 import command.DeadlineCommand;
 import command.DeleteCommand;
 import command.EventCommand;
@@ -20,14 +21,13 @@ import command.ShowCommand;
 import command.TodoCommand;
 import command.UnmarkCommand;
 import exceptions.SquidException;
-import command.Command;
 import task.TaskList;
 
 /**
  * Parses user input into command for execution.
  */
 public class Parser {
-    public enum CommandType {
+    private enum CommandType {
         LIST, BYE, DELETE, MARK, UNMARK, TODO, DEADLINE, EVENT, SHOW, CLEAR, FIND
     }
 
@@ -53,7 +53,6 @@ public class Parser {
      */
     public static Command parse(String input) throws SquidException {
         assert !Objects.equals(input, "") : "Input should not be null";
-        
         String[] words = input.trim().split("\\s+", 2);
         String commandWord = words[0].toLowerCase();
         String args = words.length > 1 ? words[1] : "";
@@ -63,7 +62,7 @@ public class Parser {
         CommandType commandType;
         try {
             commandType = CommandType.valueOf(fullCommandName);
-        }  catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return new IncorrectCommand("idk what that means :(");
         }
 
@@ -154,7 +153,7 @@ public class Parser {
         return new TodoCommand(args);
     }
 
-    private static Command parseDeadlineCommand(String args) throws DateTimeParseException{
+    private static Command parseDeadlineCommand(String args) throws DateTimeParseException {
         if (!args.contains("/by")) {
             return new IncorrectCommand("Usage: d/ deadline <description> /by <yyyy-mm-dd HHmm>");
         }
@@ -169,7 +168,7 @@ public class Parser {
         }
     }
 
-    private static Command parseEventCommand(String args) throws DateTimeParseException{
+    private static Command parseEventCommand(String args) throws DateTimeParseException {
         if (!args.contains("/from") || !args.contains("/to")) {
             return new IncorrectCommand("Usage: e/ event <description> /from <yyyy-mm-dd HHmm> /to <yyyy-mm-dd HHmm>");
         }

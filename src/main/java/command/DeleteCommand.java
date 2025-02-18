@@ -9,7 +9,7 @@ import task.TaskList;
  * Represents a command to delete a task from the task list.
  * This command is identified by the index of the task to be deleted.
  */
-public class DeleteCommand extends Command{
+public class DeleteCommand extends Command {
     private Integer index;
 
     /**

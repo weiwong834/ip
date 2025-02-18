@@ -9,7 +9,7 @@ import task.TaskList;
  * Represents a command to mark a task as uncompleted in the task list.
  * This command changes the state of a specified task to 'undone'.
  */
-public class UnmarkCommand extends Command{
+public class UnmarkCommand extends Command {
     private int index;
 
     /**

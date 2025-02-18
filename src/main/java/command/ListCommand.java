@@ -8,7 +8,7 @@ import task.TaskList;
  * Represents a command to list all tasks in the task manager.
  * This command allows the user to view all tasks currently stored in the task list.
  */
-public class ListCommand extends Command{
+public class ListCommand extends Command {
     /**
      * Executes the command to display all tasks in the task list.
      * This method invokes the UI to show all tasks.

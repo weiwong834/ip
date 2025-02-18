@@ -1,16 +1,20 @@
 package command;
 
-import exceptions.SquidException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import squid.Ui;
 import task.Storage;
 import task.TaskList;
 import task.Todo;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
+/**
+ * Tests for the MarkCommand class to ensure tasks are marked correctly and errors are handled.
+ */
 public class MarkCommandTest {
 
     private TaskList tasks;
@@ -19,6 +23,9 @@ public class MarkCommandTest {
     private MarkCommand command;
     private int taskIndexToMark;
 
+    /**
+     * Sets up the environment for each test.
+     */
     @BeforeEach
     public void setUp() {
         ui = new Ui();
@@ -32,13 +39,27 @@ public class MarkCommandTest {
         command = new MarkCommand(taskIndexToMark);
     }
 
+    /**
+     * Tests that a task is correctly marked as done when the mark command is executed.
+     */
     @Test
-    public void execute_marksTaskAsDone() throws SquidException {
+    public void execute_marksTaskAsDone() {
         assertFalse(tasks.getTask(taskIndexToMark).isDone());
 
         command.execute(tasks, ui, storage);
 
-        assertTrue(tasks.getTask(taskIndexToMark - 1).isDone());
+        assertTrue(tasks.getTask(taskIndexToMark).isDone());
+    }
+
+    /**
+     * Tests that the correct error message is returned when trying to mark an already marked task.
+     */
+    @Test
+    public void execute_attemptToMarkAlreadyDoneTask_returnsErrorMessage() {
+        tasks.getTask(taskIndexToMark).setDone();
+
+        String result = command.execute(tasks, ui, storage);
+
+        assertEquals("Error: Already marked previously", result);
     }
 }
-

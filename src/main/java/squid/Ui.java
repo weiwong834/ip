@@ -4,6 +4,10 @@ import java.util.List;
 
 import task.Task;
 
+/**
+ * Handles user interactions by providing methods to format and return responses as strings.
+ * Each method in this class prepares a specific type of message to be displayed to the user.
+ */
 public class Ui {
 
     public static String showGreeting() {
@@ -20,7 +24,7 @@ public class Ui {
 
     public String showTasks(List<Task> allTasks) {
         if (allTasks.isEmpty()) {
-            return  "Your task list is empty!";
+            return "Your task list is empty !";
         } else {
             StringBuilder sb = new StringBuilder("Here are your tasks:\n");
             int index = 1;
@@ -45,7 +49,7 @@ public class Ui {
     }
 
     public String showTasklistClear() {
-        return  "Task list cleared!";
+        return "Task list cleared!";
     }
 
     public String showTaskMark() {

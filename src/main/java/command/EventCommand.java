@@ -1,18 +1,18 @@
 package command;
 
+import java.time.LocalDateTime;
+
 import squid.Ui;
 import task.Event;
 import task.Storage;
 import task.TaskList;
-
-import java.time.LocalDateTime;
 
 /**
  * Represents a command to add an event to the task list.
  * This command encapsulates all details necessary to add the event,
  * including its description, start and date.
  */
-public class EventCommand extends Command{
+public class EventCommand extends Command {
     private String description;
     private LocalDateTime from;
     private LocalDateTime to;

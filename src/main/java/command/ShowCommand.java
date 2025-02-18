@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import squid.Ui;
+import task.Deadline;
 import task.Event;
 import task.Storage;
 import task.Task;
 import task.TaskList;
-import task.Deadline;
 
 /**
  * Represents a command to show tasks that occur on a specific date.
  * This command helps users quickly find tasks that are scheduled for a particular day.
  */
-public class ShowCommand extends Command{
+public class ShowCommand extends Command {
     private LocalDate date;
 
     /**
