@@ -38,7 +38,7 @@ public class MarkCommand extends Command {
             storage.saveTasksToFile(tasks.getAllTasks());
             return ui.showTaskMark();
         } catch (AlreadyMarkedException e) {
-            return ui.showError("Already marked previously");
+            return ui.showError("you have marked previously :/");
         }
     }
 }

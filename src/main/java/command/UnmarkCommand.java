@@ -38,7 +38,7 @@ public class UnmarkCommand extends Command {
             storage.saveTasksToFile(tasks.getAllTasks());
             return ui.showTaskUnmark();
         } catch (AlreadyUnmarkedException e) {
-            return ui.showError("Already unmarked previously");
+            return ui.showError("you have unmarked previously :/");
         }
     }
 }

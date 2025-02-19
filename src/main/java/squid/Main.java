@@ -28,7 +28,8 @@ public class Main extends Application {
             stage.getIcons().add(logo);
             stage.setMinHeight(220);
             stage.setMinWidth(417);
-            stage.setMaxWidth(800);
+            stage.setMaxWidth(500);
+            stage.setMaxHeight(1000);
             fxmlLoader.<MainWindow>getController().setSquid(squid);
             stage.show();
         } catch (IOException e) {

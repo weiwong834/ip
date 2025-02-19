@@ -60,6 +60,6 @@ public class MarkCommandTest {
 
         String result = command.execute(tasks, ui, storage);
 
-        assertEquals("Error: Already marked previously", result);
+        assertEquals("oops! you have marked previously :/", result);
     }
 }

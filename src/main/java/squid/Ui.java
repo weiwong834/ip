@@ -11,7 +11,7 @@ import task.Task;
 public class Ui {
 
     public static String showGreeting() {
-        return "Hello! I'm Squid\nWhat can I do for you?";
+        return "what now...";
     }
 
     public String showBye() {
@@ -19,7 +19,7 @@ public class Ui {
     }
 
     public String showError(String message) {
-        return "Error: " + message;
+        return "oops! " + message;
     }
 
     public String showTasks(List<Task> allTasks) {
