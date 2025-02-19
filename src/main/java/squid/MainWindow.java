@@ -1,5 +1,6 @@
 package squid;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -7,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * Controller for the main GUI.
@@ -16,6 +18,8 @@ public class MainWindow extends AnchorPane {
     private ScrollPane scrollPane;
     @FXML
     private VBox dialogContainer;
+    @FXML
+    private AnchorPane mainPane;
     @FXML
     private TextField userInput;
     @FXML
@@ -37,11 +41,6 @@ public class MainWindow extends AnchorPane {
         squid = d;
     }
 
-    private void displayGreeting() {
-        String greeting = squid.ui.showGreeting();
-        dialogContainer.getChildren().add(DialogBox.getSquidDialog(greeting, SQUID_IMAGE));
-    }
-
     /**
      * Creates two dialog boxes, one echoing user input and the other containing squid's reply and then appends them to
      * the dialog container. Clears the user input after processing.
@@ -50,10 +49,31 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = squid.getResponse(input);
+        boolean isExit = response.equals("Bye!");
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, USER_IMAGE),
                 DialogBox.getSquidDialog(response, SQUID_IMAGE)
         );
         userInput.clear();
+        if (isExit) {
+            handleExit();
+        }
+    }
+
+    /**
+     * Schedules the application to close after a delay, displaying the goodbye message.
+     */
+    private void handleExit() {
+        new Thread(() -> {
+            try {
+                Thread.sleep(1500);
+                Platform.runLater(() -> {
+                    Stage stage = (Stage) scrollPane.getScene().getWindow();
+                    stage.close();
+                });
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }).start();
     }
 }
