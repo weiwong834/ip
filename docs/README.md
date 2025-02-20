@@ -4,6 +4,8 @@
 Squid is a simple and intuitive chatbot task manager designed to help users organise their tasks efficiently. 
 Using a conversational interface, Squid allows users to add, delete, mark, and list tasks in a user-friendly format.
 
+![](Ui.png)
+
 ## **Table of Contents**
 - [Getting Started](#getting-started)
 - [Features](#features)
@@ -17,6 +19,8 @@ Using a conversational interface, Squid allows users to add, delete, mark, and l
     - Finding Tasks with Keyword: [`find`](#finding-tasks)
     - Showing Tasks on Date: [`show`](#showing-tasks-on-date)
     - Clearing Task List: [`clear`](#clearing-task-list)
+    - Exiting Squid: [`bye`](#exiting-squid)
+- [Command Shortcuts](#command-shortcuts)
 
 
 
@@ -70,7 +74,7 @@ Now you have 7 tasks!
 ---
 
 ### Adding Event Task
-To add a event task, use: `event <task description> /from YYYY-MM-DD HHmm /to YYYY-MM-DD HHmm`
+To add an event task, use: `event <task description> /from YYYY-MM-DD HHmm /to YYYY-MM-DD HHmm`
 
 **Example:**
 ```sh
@@ -199,3 +203,33 @@ clear
 **Expected output:**
 ```
 Task list is cleared!
+```
+
+---
+
+### Exiting Squid
+To exit program, use: `bye`
+
+**Example:**
+```sh
+bye
+```
+
+**Expected output:**
+```
+Bye!
+```
+---
+## **Command Shortcuts**
+
+| Command   | Shortcut |
+|-----------|----------|
+| list      | ls       |
+| delete    | del      |
+| mark      | m        |
+| unmark    | um       |
+| todo      | t        |
+| deadline  | d        |
+| event     | e        |
+| show      | s        |
+| find      | f        |
