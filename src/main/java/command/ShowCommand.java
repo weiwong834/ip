@@ -48,7 +48,7 @@ public class ShowCommand extends Command {
         if (matchingTasks.isEmpty()) {
             return "No tasks found on this date";
         } else {
-            StringBuilder sb = new StringBuilder("Task on " + date + ":\n");
+            StringBuilder sb = new StringBuilder("Tasks on " + date + ":\n");
             for (int i = 0; i < matchingTasks.size(); i++) {
                 sb.append((i + 1) + ". " + matchingTasks.get(i) + "\n");
             }

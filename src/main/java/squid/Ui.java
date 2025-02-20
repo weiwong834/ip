@@ -57,6 +57,6 @@ public class Ui {
     }
 
     public String showTaskUnmark() {
-        return "Marked as undone";
+        return "Marked as undone!";
     }
 }
